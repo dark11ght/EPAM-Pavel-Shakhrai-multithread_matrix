@@ -37,7 +37,7 @@ public class Matrix {
     }
 
     public int getElementValue(int i, int j) {
-        Element currentElement= matrix[i][j];
+        Element currentElement = matrix[i][j];
         int elementValue = currentElement.getValue();
         return elementValue;
     }
@@ -80,9 +80,16 @@ public class Matrix {
 
     @Override
     public String toString() {
-        return "Matrix{" +
-                "matrix=" + Arrays.toString(matrix) +
-                ", matrixSize=" + matrixSize +
-                '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n");
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
+                Element currentElement = matrix[i][j];
+                int elementValue = currentElement.getValue();
+                stringBuilder.append(String.format("%4d", elementValue));
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 }
