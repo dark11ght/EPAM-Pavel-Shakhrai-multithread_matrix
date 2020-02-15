@@ -46,7 +46,6 @@ public class Matrix {
 
         Element currentElement = matrix[i][j];
         try {
-
             return currentElement.changeElement(value);
         } finally {
             currentElement.unlock();

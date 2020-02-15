@@ -1,6 +1,5 @@
 package by.shakhrai.pavel;
 
-import by.shakhrai.pavel.config.InputFileConfig;
 import by.shakhrai.pavel.config.OutPutFileConfig;
 import by.shakhrai.pavel.input.reader.InputFileReader;
 import by.shakhrai.pavel.service.MatrixChangerService;
@@ -13,17 +12,18 @@ import java.util.concurrent.CyclicBarrier;
 
 public class Main {
     public static void main(String[] args) {
-        File inputFile = InputFileConfig.getInputFile();
+
         File outputFile = OutPutFileConfig.getOutputFile();
 
-        InputFileReader inputFileReader = new InputFileReader(inputFile);
-       /* int n = inputFileReader.getN();
-        int y = inputFileReader.getY();
-*/
-        int n = 5;
-        int y = 5;
+        File inputFile = new File("src/main/resources/input.txt");
 
-        MatrixInitThread matrixInitiator = new MatrixInitThread(n);
+        InputFileReader inputFileReader = new InputFileReader(inputFile);
+        int n = inputFileReader.getN();
+        int y = inputFileReader.getY();
+       
+
+
+MatrixInitThread matrixInitiator = new MatrixInitThread(n);
         matrixInitiator.start();
         try {
             matrixInitiator.join();
@@ -33,14 +33,14 @@ public class Main {
         }
 
         MatrixChangerService[] threads = new MatrixChangerService[n];
-        CyclicBarrier matrixResultPerformerBarrier = new CyclicBarrier(n, new ResultWriterInFile(outputFile, threads));
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(n, new ResultWriterInFile(outputFile, threads));
 
         int id = 0;
         for (int i = 0; i < y; i++) {
 
             CountDownLatch syncLatch = new CountDownLatch(n);
             for (int j = 0; j < n; j++) {
-                threads[j] = new MatrixChangerService(id++, syncLatch, matrixResultPerformerBarrier);
+                threads[j] = new MatrixChangerService(id++, syncLatch, cyclicBarrier);
                 threads[j].start();
             }
 
@@ -53,6 +53,7 @@ public class Main {
                 }
             }
         }
+
     }
 }
 

@@ -3,9 +3,6 @@ package by.shakhrai.pavel.input.reader;
 import java.io.*;
 
 public class InputFileReader {
-    private static final int N = 0;
-    private static final int Y = 1;
-
     private File file;
     private int n;
     private int y;
@@ -13,6 +10,7 @@ public class InputFileReader {
 
     public InputFileReader(File file) {
         this.file = file;
+        readMatrixParametrs();
     }
 
 
@@ -27,12 +25,13 @@ public class InputFileReader {
 
     private void readMatrixParametrs() {
         if (file != null) {
-            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line = br.readLine();
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+
+                String line = bufferedReader.readLine();
                 if (line != null) {
-                    String[] numbersStringArray = line.split("x");
-                    n = Integer.parseInt(numbersStringArray[N]);
-                    y = Integer.parseInt(numbersStringArray[Y]);
+                    String[] numbersStringArray = line.split(";");
+                    n = Integer.parseInt(numbersStringArray[0]);
+                    y = Integer.parseInt(numbersStringArray[1]);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
